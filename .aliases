@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+
+# Navigation
+alias ..="cd ../"
+alias ...="cd ../../"
+alias ....="cd ../../../"
+alias .....="cd ../../../../"
+alias ~="cd ~"
+alias -- -="cd -"
+
+# Shortcuts
+alias dl="cd ~/Downloads"
+alias dt="cd ~/Desktop"
+alias p="cd ~/git"
+alias g="git"
+alias la="ls -lha"
+alias c="clear"
+
+# Git
+alias gst='git status'
+alias gck='git checkout'
+alias gsh='git stash'
+alias gunignore='git update-index --no-assume-unchanged'
+alias gignored='git ls-files -v | grep ^[a-z]'
+alias gpush='git push -u origin $(git rev-parse --abbrev-ref HEAD)'
+alias gpushf='git push -f origin $(git rev-parse --abbrev-ref HEAD)'
+alias git_bug='git gc --prune=now'
+alias gitmaster='git checkout master'
+alias gitdev='git checkout development'
+alias gitupdatebranches='git remote prune origin && gitdev && git branch -d $(git branch --merged | grep -v "master\|development")'
+alias gitclean='git checkout -- . && git clean -df'
+
+function gignore {
+  echo $1 >> .git/info/exclude
+}
+
+gb() {
+  echo -n '(' && git branch 2>/dev/null | grep '^*' | colrm 1 2 | tr -d '\n' && echo  -n ')'
+}
+git_branch() {
+  gb | sed 's/()//'
+}
+
+# Docker
+alias make_docker_great='docker volume rm $(docker volume ls -qf dangling=true) && docker rmi $(docker images -f "dangling=true" -q)'
+alias docker_crap_removel='docker rm $(docker ps -f status=exited -q)'
+alias dcr='docker-compose restart'
+alias dcs='docker-compose stop'
+alias dcu='docker-compose up -d'
+alias dcv='docker-compose down -v'
+
+function dc_exec_bash {
+  docker-compose exec $1 sh
+}
+
+# Cloud providers connections
+## GCP
+
+# Connect to gcloud sql proxy
+alias db_foo='cloud_sql_proxy -instances="db-foo:europe-west1:my_schema"=tcp:5431'
+# SSH into a instance in a specific project
+alias ssh_foo='gcloud beta compute --project "my-project" ssh --zone "europe-west1-b" "foo"'
+alias foo_deploy='gcloud --project=my-project app deploy app-env.yaml $1'
+
+## AWS
+# SSH into a EC2
+alias sshfoo='aws ssm start-session --target i-xxxxxxxxxxxxxxxxx'
+
+## Random
+alias ip="curl ipecho.net/plain ; echo"
+alias random_password="openssl rand -base64 $1" # arg should be a number

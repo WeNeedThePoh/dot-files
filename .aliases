@@ -26,8 +26,9 @@ alias gpush='git push -u origin $(git rev-parse --abbrev-ref HEAD)'
 alias gpushf='git push -f origin $(git rev-parse --abbrev-ref HEAD)'
 alias git_bug='git gc --prune=now'
 alias gitmaster='git checkout master'
+alias gitmain='git checkout main'
 alias gitdev='git checkout development'
-alias gitupdatebranches='git remote prune origin && gitdev && git branch -d $(git branch --merged | grep -v "master\|development")'
+alias gitupdatebranches='git remote prune origin && gitdev && git branch -d $(git branch --merged | grep -v "master\|development\|main")'
 alias gitclean='git checkout -- . && git clean -df'
 
 function gignore {
@@ -65,7 +66,17 @@ alias foo_deploy='gcloud --project=my-project app deploy app-env.yaml $1'
 ## AWS
 # SSH into a EC2
 alias sshfoo='aws ssm start-session --target i-xxxxxxxxxxxxxxxxx'
+alias aws_login='aws-vault login $username'
+
+## Kubernetes
+alias kpods='kubectl get pods'
+alias kns='kubectl get namespaces'
+alias kcns='kubectl config set-context --current --namespace=$1'
+alias kport='kubectl port-forward -n $1 $2 --address localhost,0.0.0.0 $3:$4'
 
 ## Random
 alias ip="curl ipecho.net/plain ; echo"
 alias random_password="openssl rand -base64 $1" # arg should be a number
+alias add_space_to_dock="defaults write com.apple.dock persistent-apps -array-add '{"tile-type"="spacer-tile";}' && rm '~/Library/Application Support/Dock/desktoppicture.db' && killall Dock"
+alias add_space_to_dock_small="defaults write com.apple.dock persistent-apps -array-add '{"tile-type"="small-spacer-tile";}' && rm '~/Library/Application Support/Dock/desktoppicture.db' && killall Dock"
+alias mountDos='sudo mkdir /Volumes/external_disk/ sudo mount -t msdos /dev/disk2 /Volumes/external_disk/'
